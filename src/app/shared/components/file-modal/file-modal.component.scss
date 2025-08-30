@@ -1,0 +1,38 @@
+::ng-deep {
+  .modal {
+    &__spin {
+      .ant-spin {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        width: var(--96px) !important;
+        height: var(--96px) !important;
+        transform: translate(-50%, -50%) !important;
+      }
+
+      .ant-spin-blur::after {
+        opacity: .8 !important;
+      }
+    }
+  }
+}
+
+.modal {
+  &__content {
+    padding: var(--16px) 0;
+  }
+}
+
+.btn {
+  &__text {
+    &--confirm {
+      display: flex;
+      align-items: center;
+      gap: var(--4px);
+      
+      ng-icon {
+        font-size: 10px;
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+.ant-dropdown-menu,
+.ant-upload,
+.ant-message-notice-content,
+.ant-tooltip-inner,
+.ant-btn,
+.ant-notification-notice {
+  border-radius: var(--8px) !important;
+}
+
+.ant-modal-content {
+  border-radius: var(--12px) !important;
+}
+
+.ant-modal-header {
+  border-top-left-radius: var(--12px) !important;
+  border-top-right-radius: var(--12px) !important;
+}
+
+.ant-modal-body {
+  border-bottom-left-radius: var(--12px) !important;
+  border-bottom-right-radius: var(--12px) !important;
+  padding: 0 !important;
+  // max-height: calc(100vh - 200px) !important;
+  // overflow-y: auto !important;
+
+  .ant-tabs-content {
+    max-height: calc(100vh - 200px) !important;
+    overflow-y: auto !important;
+  }
+}
+
+.ant-tooltip-arrow {
+  display: none !important;
+}
+
+.ant-tooltip-placement-top,
+.ant-tooltip-placement-topLeft,
+.ant-tooltip-placement-topRight {
+  padding-bottom: var(--8px) !important;
+}
+
+.ant-btn-circle {
+  border-radius: 50% !important;
+}

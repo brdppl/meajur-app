@@ -1,0 +1,42 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzWidth]="800"
+  nzCentered
+>
+  <ng-template [nzModalTitle]>{{ data().name }}</ng-template>
+  <ng-template [nzModalContent] class="modal">
+    <nz-spin
+      [nzSpinning]="isLoading()"
+      class="modal__spin"
+      nzTip="Analisando contrato..."
+    >
+      <nz-tabset nzTabPosition="left" [nzSelectedIndex]="tabSelected()">
+        <nz-tab nzTitle="Contrato Original">
+          <div class="modal__content">{{ data().response.content }}</div>
+        </nz-tab>
+        <nz-tab nzTitle="Contrato Analisado" [nzDisabled]="!analysis()">
+          <div class="modal__content" [innerHTML]="analysis() | sanitize"></div>
+        </nz-tab>
+      </nz-tabset>
+
+      <!-- <div class="modal__content">{{ data().response.content }}</div> -->
+    </nz-spin>
+  </ng-template>
+  <ng-template [nzModalFooter]>
+    <button nz-button nzType="default" (click)="handleCancel()">Fechar</button>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="handleOk()"
+      [disabled]="isLoading()"
+    >
+      <div class="btn__text--confirm">
+        <ng-icon name="ionSparkles" />
+        <span>{{ analysis() ? "Nova análise" : "Analisar" }}</span>
+      </div>
+    </button>
+    <!-- <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button> -->
+  </ng-template>
+</nz-modal>

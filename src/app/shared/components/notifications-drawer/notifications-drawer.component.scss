@@ -1,0 +1,18 @@
+::ng-deep {
+  .empty {
+    &__content {
+      .ant-empty-image {
+        height: 65px !important;
+        margin: 0 !important;
+      }
+    }
+  }
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  margin: var(--4px);
+}

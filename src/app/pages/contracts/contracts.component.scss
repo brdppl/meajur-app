@@ -1,0 +1,11 @@
+.actions {
+  text-align: right;
+}
+
+.btn {
+  &--delete {
+    a {
+      color: var(--error-color);
+    }
+  }
+}

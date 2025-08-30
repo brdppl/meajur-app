@@ -1,0 +1,15 @@
+.file {
+  &__btn {
+    &--delete {
+      color: var(--error-color);
+    }
+
+    &--warning {
+      color: var(--warning-color);
+    }
+  }
+}
+
+::ng-deep .file__upload .ant-upload.ant-upload-drag {
+  height: auto;
+}

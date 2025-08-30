@@ -1,0 +1,41 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="The first Modal"
+  [nzWidth]="600"
+  nzCentered
+  [nzFooter]="null"
+  (nzOnCancel)="handleCancel()"
+>
+  <ng-template [nzModalTitle]>{{ modalTitle() }}</ng-template>
+  <ng-template [nzModalContent]>
+    <nz-tabset nzTabPosition="left">
+      <nz-tab [nzTitle]="generalTitle" (nzClick)="changeModalTitle('Geral')">
+        <div class="container__content">Content of Tab Pane 1</div>
+      </nz-tab>
+      <nz-tab
+        [nzTitle]="notificationsTitle"
+        (nzClick)="changeModalTitle('Notificações')"
+      >
+        <div class="container__content">Content of Tab Pane 2</div>
+      </nz-tab>
+      <nz-tab [nzTitle]="accountTitle" (nzClick)="changeModalTitle('Conta')">
+        <div class="container__content">Content of Tab Pane 3</div>
+      </nz-tab>
+    </nz-tabset>
+
+    <ng-template #generalTitle>
+      <nz-icon nzType="setting" nzTheme="outline" />
+      <span>Geral</span>
+    </ng-template>
+
+    <ng-template #notificationsTitle>
+      <nz-icon nzType="bell" nzTheme="outline" />
+      <span>Notificações</span>
+    </ng-template>
+
+    <ng-template #accountTitle>
+      <nz-icon nzType="user" nzTheme="outline" />
+      <span>Conta</span>
+    </ng-template>
+  </ng-template>
+</nz-modal>

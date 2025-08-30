@@ -1,0 +1,84 @@
+<nz-table
+  nzShowSizeChanger
+  [nzData]="listOfAnalyses()"
+  [nzFrontPagination]="false"
+  [nzLoading]="isLoading()"
+  [nzTotal]="total()"
+  [nzPageSize]="pageSize()"
+  [nzPageIndex]="pageIndex()"
+  [nzNoResult]="noResultTpl"
+  (nzQueryParams)="onQueryParamsChange($event)"
+>
+  <thead>
+    <tr>
+      <th nzColumnKey="titleFile" [nzSortFn]="true">Nome do arquivo</th>
+      <th nzColumnKey="createdAt" [nzSortFn]="true">Criado em</th>
+      <th nzColumnKey="actions">Ações</th>
+    </tr>
+  </thead>
+  <tbody ngSkipHydration>
+    @for (data of listOfAnalyses(); track data._id) {
+    <tr>
+      <td>{{ data.titleFile }}</td>
+      <td>
+        {{ data.createdAt | date : "EEEE, d 'de' MMMM 'de' y 'às' hh:mm" }}
+      </td>
+      <td class="actions">
+        <button
+          nz-button
+          nz-dropdown
+          nzTrigger="click"
+          [nzDropdownMenu]="menu"
+          nzPlacement="topRight"
+          nzType="text"
+        >
+          <nz-icon nzType="more" nzTheme="outline" />
+        </button>
+      </td>
+    </tr>
+
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="handleOpen(data._id)">
+          <nz-icon nzType="read" nzTheme="outline" />
+          Abrir análise
+        </li>
+        <li nz-menu-item class="btn--delete">
+          <a
+            nz-popconfirm
+            [nzPopconfirmTitle]="
+              'Tem certeza que deseja excluir o contrato ' +
+              data.titleFile +
+              '?'
+            "
+            (nzOnConfirm)="handleRemove(data._id)"
+            nzOkText="Excluir"
+            nzCancelText="Cancelar"
+          >
+            <nz-icon nzType="delete" nzTheme="outline" />
+            Excluir
+          </a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    }
+  </tbody>
+</nz-table>
+
+<ng-template #noResultTpl>
+  <nz-empty
+    class="empty__content"
+    nzNotFoundImage="simple"
+    nzNotFoundContent="Nenhum contrato encontrado"
+  ></nz-empty>
+</ng-template>
+
+@if(isBrowser()) {
+<app-file-modal
+  [isVisible]="isModalVisible()"
+  [data]="modalData"
+  [analysis]="analysis"
+  [tabSelected]="tabSelected"
+  (onCloseModal)="handleCloseModal($event)"
+/>
+}
