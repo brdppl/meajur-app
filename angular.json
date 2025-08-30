@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "autonagaragem": {
+    "meajur-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -21,7 +21,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/autonagaragem",
+            "outputPath": "dist/meajur-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -83,10 +83,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "autonagaragem:build:production"
+              "buildTarget": "meajur-app:build:production"
             },
             "development": {
-              "buildTarget": "autonagaragem:build:development"
+              "buildTarget": "meajur-app:build:development"
             }
           },
           "defaultConfiguration": "development"
