@@ -11,16 +11,16 @@ export class ContractsService {
 
   public listAnalyses(userId: string, criteria: any): Observable<any> {
     return this.http.get(
-      `${environment.apiUrl}/analytics/list-by-user/${userId}`,
+      `${environment.apiUrl}/analyses/list-by-user/${userId}`,
       { params: criteria }
     );
   }
 
   public listAnalysisById(id: string): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/analytics/list-by-id/${id}`);
+    return this.http.get(`${environment.apiUrl}/analyses/list-by-id/${id}`);
   }
 
   public removeAnalysis(id: string): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/analytics/remove/${id}`);
+    return this.http.delete(`${environment.apiUrl}/analyses/remove/${id}`);
   }
 }
