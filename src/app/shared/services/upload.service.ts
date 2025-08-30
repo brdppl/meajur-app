@@ -16,9 +16,6 @@ export class UploadService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(
-      `${environment.apiUrl}/analytics/scan-file`,
-      formData
-    );
+    return this.http.post(`${environment.apiUrl}/analyses/scan-file`, formData);
   }
 }

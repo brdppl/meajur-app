@@ -13,13 +13,13 @@ export class AnalyzeService {
   private http = inject(HttpClient);
 
   public analyzeContract(rawText: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/analytics/analyze-file`, {
+    return this.http.post(`${environment.apiUrl}/analyses/analyze-file`, {
       segment: 'Microempreendedor',
       text: rawText,
     });
   }
 
   public saveAnalysis(payload: IAnalysis): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/analytics/save`, payload);
+    return this.http.post(`${environment.apiUrl}/analyses/save`, payload);
   }
 }
