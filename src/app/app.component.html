@@ -1,4 +1,5 @@
 <nz-layout>
+  @if (!isExternalPage()) {
   <nz-sider
     nzTheme="light"
     nzCollapsible
@@ -13,7 +14,7 @@
           nzTheme="outline"
           (click)="isCollapsed.set(!isCollapsed())"
         />
-        <span class="logo__name">Contract Analyzer</span>
+        <span class="logo__name">Meajur v1.0.0</span>
       </li>
       <li nz-menu-item [nzMatchRouter]="true" [nzMatchRouterExact]="true">
         <a [routerLink]="['/']">
@@ -41,16 +42,33 @@
         [nzDropdownMenu]="menu"
         [class]="{ user__collapsed: isCollapsed() }"
       >
+        @if(!userDataService.getUserData()?.photo) {
         <nz-avatar nzSize="small" nzIcon="user" />
+        } @else {
+        <nz-avatar
+          nzSize="small"
+          [nzSrc]="userDataService.getUserData()?.photo"
+        />
+        }
         <div class="user__info">
-          <span class="user__info__name">Bernardo Sampaio</span>
+          <!-- <span class="user__info__name">Bernardo Sampaio</span> -->
+          <span class="user__info__name">
+            @if(userDataService.getUserData()?.name) {
+            {{ userDataService.getUserData()?.name }}
+            {{ userDataService.getUserData()?.lastName }}
+            } @else {
+            {{ userDataService.getUserData()?.email }}
+            }
+          </span>
           <span class="user__info__plan">Grátis · 7 dias</span>
         </div>
       </li>
     </ul>
   </nz-sider>
+  }
 
   <nz-layout class="container">
+    @if (!isExternalPage()) {
     <nz-header class="container__header">
       <button
         nz-button
@@ -75,12 +93,21 @@
         </nz-badge>
       </button>
     </nz-header>
-    <nz-content class="container__content">
+    }
+    <nz-content
+      class="container__content"
+      [style]="{
+        display: isHome() ? 'flex' : 'initial',
+        padding: isExternalPage() ? '0' : ''
+      }"
+    >
       <div class="container__content__inner-content">
         <router-outlet />
       </div>
     </nz-content>
-    <nz-footer>Contract Analyzer ©2025 Powered by CodeArt</nz-footer>
+    <!-- <nz-footer class="footer"
+      >Meajur ©{{ date.getFullYear() }} Powered by CodeArt</nz-footer
+    > -->
   </nz-layout>
 </nz-layout>
 
@@ -88,14 +115,15 @@
   <ul nz-menu class="options">
     <li nz-menu-item nzDisabled>
       <nz-icon nzType="user" nzTheme="outline" />
-      beco_sampa&#64;hotmail.com
+      <!-- beco_sampa&#64;hotmail.com -->
+      {{ userDataService.getUserData()?.email }}
     </li>
     <li nz-menu-item (click)="handleConfigModal()">
       <nz-icon nzType="setting" nzTheme="outline" />
       Configurações
     </li>
     <li nz-menu-divider></li>
-    <li nz-menu-item class="options__logout">
+    <li nz-menu-item class="options__logout" (click)="logout()">
       <nz-icon nzType="logout" nzTheme="outline" />
       Sair
     </li>

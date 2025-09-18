@@ -1,0 +1,70 @@
+<div class="login">
+  <nz-card class="login__card" nzBordered="false">
+    <h2 class="login__title">Bem-vindo de volta</h2>
+    <p class="login__subtitle">Acesse sua conta para continuar</p>
+
+    <form nz-form [formGroup]="form" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Digite seu e-mail">
+          <input
+            nz-input
+            placeholder="E-mail"
+            type="email"
+            nzSize="large"
+            formControlName="email"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="login__password">
+        <nz-form-control nzErrorTip="Digite sua senha">
+          <input
+            nz-input
+            placeholder="Senha"
+            [type]="passwordType()"
+            nzSize="large"
+            formControlName="password"
+          />
+          @if(form.get('password')!.value.length) {
+          <div class="login__password__toggle" (click)="togglePassword()">
+            <div class="login__password__toggle__overlay">
+              <nz-icon
+                [nzType]="
+                  passwordType() === 'password' ? 'eye-invisible' : 'eye'
+                "
+                nzTheme="outline"
+              />
+            </div>
+          </div>
+          }
+        </nz-form-control>
+      </nz-form-item>
+
+      <div class="login__forgot-password">
+        <a>Esqueci a senha</a>
+      </div>
+
+      <button nz-button nzType="primary" class="login__btn" nzSize="large">
+        Entrar
+      </button>
+    </form>
+
+    <div class="login__divider">
+      <span>ou</span>
+    </div>
+
+    <button
+      nz-button
+      class="login__google-btn"
+      nzSize="large"
+      (click)="loginWithGoogle()"
+    >
+      <ng-icon name="ionLogoGoogle" />
+      <span>Continuar com Google</span>
+    </button>
+
+    <div class="login__register-link">
+      <span>Não tem conta?</span>
+      <a [routerLink]="['/register']">Criar nova conta</a>
+    </div>
+  </nz-card>
+</div>

@@ -17,6 +17,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import localePt from '@angular/common/locales/pt';
 import { LOCALE_ID } from '@angular/core';
+import {
+  provideNgxWebstorage,
+  withNgxWebstorageConfig,
+  withLocalStorage,
+  withSessionStorage,
+} from 'ngx-webstorage';
 
 registerLocaleData(localePt);
 
@@ -29,6 +35,11 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
+    provideNgxWebstorage(
+      withNgxWebstorageConfig({ separator: ':', caseSensitive: true }),
+      withLocalStorage(),
+      withSessionStorage()
+    ),
     { provide: LOCALE_ID, useValue: 'pt-BR' },
   ],
 };

@@ -3,7 +3,9 @@
 .ant-message-notice-content,
 .ant-tooltip-inner,
 .ant-btn,
-.ant-notification-notice {
+.ant-notification-notice,
+.ant-select-dropdown,
+.ant-input {
   border-radius: var(--8px) !important;
 }
 
@@ -41,4 +43,18 @@
 
 .ant-btn-circle {
   border-radius: 50% !important;
+}
+
+.ant-spin-blur::after {
+  opacity: .8 !important;
+}
+
+.ant-pagination-item,
+.ant-pagination-item-link,
+.ant-select-selector {
+    border-radius: var(--4px) !important;
+}
+
+.ant-form-item {
+  margin-bottom: var(--16px) !important;
 }

@@ -1,0 +1,118 @@
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e0e7ff 0%, #f0fdfa 100%);
+
+  &__card {
+    width: 350px;
+    border-radius: var(--12px);
+    box-shadow: 0 var(--8px) var(--32px) rgba(30, 64, 175, 0.12);
+    padding: var(--24px) var(--16px);
+    background: var(--background-color);
+  }
+
+  &__title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: var(--8px);
+    color: #1e40af;
+    line-height: 1.2;
+  }
+
+  &__subtitle {
+    text-align: center;
+    color: var(--text-secondary-color);
+    margin-bottom: var(--24px);
+  }
+
+  &__btn {
+    font-weight: 600;
+    width: 100%;
+  }
+
+  &__password {
+    position: relative;
+
+    &__toggle {
+      height: calc(100% - 2px);
+      width: 25px;
+      position: absolute;
+      right: 5px;
+      top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--background-color);
+      border-radius: var(--12px);
+      cursor: pointer;
+
+      &__overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 25px;
+        width: 100%;
+        border-radius: 50%;
+
+        &:hover {
+          background: var(--primary-color-hover);
+        }
+      }
+    }
+  }
+
+  &__divider {
+    text-align: center;
+    margin: var(--16px) 0;
+    position: relative;
+
+    span {
+      background: #fff;
+      padding: 0 var(--12px);
+      color: #94a3b8;
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    &::before {
+      content: '';
+      display: block;
+      height: 1px;
+      background: #e0e7ef;
+      position: absolute;
+      left: 0; right: 0; top: 50%;
+      z-index: 0;
+    }
+  }
+
+  &__login-link {
+    text-align: center;
+    margin-top: var(--16px);
+
+    span {
+      color: #64748b;
+      margin-right: var(--4px);
+    }
+
+    a {
+      color: #1e40af;
+      font-weight: 600;
+      text-decoration: underline;
+
+      &:hover {
+        color: #2563eb;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .login {
+    flex-direction: column;
+    padding: var(--32px) 0;
+  }
+}

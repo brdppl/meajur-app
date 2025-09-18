@@ -1,28 +1,30 @@
 <div class="container">
   <div nz-row>
     <div nz-col nzSpan="12" nzOffset="6">
-      <nz-upload
-        class="file__upload"
-        nzType="drag"
-        nzAccept=".pdf, .doc, .docx, .txt"
-        [nzCustomRequest]="customRequest"
-        [nzMultiple]="false"
-        [nzBeforeUpload]="beforeUpload"
-        [nzShowUploadList]="{ showDownloadIcon: false, showRemoveIcon: true }"
-        [nzFileList]="fileList()"
-        [nzFileListRender]="fileListRender"
-        (nzChange)="handleChange($event)"
-      >
-        <p class="ant-upload-drag-icon">
-          <nz-icon nzType="inbox" />
-        </p>
-        <p class="ant-upload-text">
-          Clique ou arraste o arquivo nesta área para fazer o upload
-        </p>
-        <p class="ant-upload-hint">
-          Arquivos suportados: .pdf, .doc, .docx, .txt
-        </p>
-      </nz-upload>
+      <nz-spin [nzSpinning]="isScanning()" nzTip="Carregando contrato...">
+        <nz-upload
+          class="file__upload"
+          nzType="drag"
+          nzAccept=".pdf, .doc, .docx, .txt"
+          [nzCustomRequest]="customRequest"
+          [nzMultiple]="false"
+          [nzBeforeUpload]="beforeUpload"
+          [nzShowUploadList]="{ showDownloadIcon: false, showRemoveIcon: true }"
+          [nzFileList]="fileList()"
+          [nzFileListRender]="fileListRender"
+          (nzChange)="handleChange($event)"
+        >
+          <p class="ant-upload-drag-icon">
+            <nz-icon nzType="inbox" />
+          </p>
+          <p class="ant-upload-text">
+            Clique ou arraste o arquivo nesta área para fazer o upload
+          </p>
+          <p class="ant-upload-hint">
+            Arquivos suportados: .pdf, .doc, .docx, .txt
+          </p>
+        </nz-upload>
+      </nz-spin>
 
       <ng-template #fileListRender>
         @if(fileList().length > 0) {
@@ -73,6 +75,7 @@
   <app-file-modal
     [isVisible]="isModalVisible()"
     [data]="modalData"
+    [isTmpData]="true"
     (onCloseModal)="handleCloseModal($event)"
   />
   }

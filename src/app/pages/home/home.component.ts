@@ -24,6 +24,8 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { ionSparklesOutline } from '@ng-icons/ionicons';
 import { AnalyzeService } from '../../shared/services/analyze.service';
 import { isPlatformBrowser } from '@angular/common';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -36,6 +38,7 @@ import { isPlatformBrowser } from '@angular/common';
     NzListModule,
     NzToolTipModule,
     NgIcon,
+    NzSpinModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './home.component.html',
@@ -53,14 +56,15 @@ export class HomeComponent implements OnInit {
   ]);
   public isModalVisible = signal(false);
   public modalData = signal<NzUploadFile>(<NzUploadFile>{});
-  // public fileContent = '';
 
   public platformId = inject(PLATFORM_ID);
   public isBrowser = signal(false);
+  public isScanning = signal(false);
 
   private uploadService = inject(UploadService);
   private messageService = inject(NzMessageService);
   private analyzeService = inject(AnalyzeService);
+  private authService = inject(AuthService);
 
   constructor() {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
@@ -84,26 +88,34 @@ export class HomeComponent implements OnInit {
   };
 
   public customRequest = (item: NzUploadXHRArgs) => {
-    return this.uploadService.uploadFile(item.postFile as File).subscribe({
-      next: (response) => {
-        item.onSuccess!(response, item.file, event);
-        this.analyzeService.analyzedContract.set('');
-        this.modalData.set({
-          uid: item.file.uid,
-          name: item.file.name,
-          status: item.file.status,
-          response: response,
-        });
-      },
-      error: (error) => {
-        console.error('Upload failed:', error);
-        item.onError!(error, item.file);
-      },
-    });
+    this.isScanning.set(true);
+
+    return this.uploadService
+      .scanFile(item.postFile as File, this.authService.getToken() ?? '')
+      .subscribe({
+        next: (response) => {
+          this.isScanning.set(false);
+          item.onSuccess!(response, item.file, event);
+          this.analyzeService.analyzedContract.set('');
+          this.modalData.set({
+            uid: item.file.uid,
+            name: item.file.name,
+            status: item.file.status,
+            response: response,
+          });
+        },
+        error: (error) => {
+          this.isScanning.set(false);
+          console.error('Upload failed:', error);
+          item.onError!(error, item.file);
+        },
+      });
   };
 
   public handleChange(info: NzUploadChangeParam): void {
-    this.limitFileList(info);
+    if (!this.isScanning()) {
+      this.limitFileList(info);
+    }
 
     if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);

@@ -101,10 +101,11 @@
   }
 
   &__content {
-    padding: var(--24px);
-    display: flex;
+    padding: var(--8px);
+    // display: flex;
     align-items: center;
     justify-content: center;
+    overflow-y: auto;
 
     &__inner-content {
       width: 100%;
@@ -116,4 +117,11 @@
   &__logout {
     color: var(--error-color);
   }
+}
+
+.footer {
+  padding: var(--16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

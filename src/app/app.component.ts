@@ -2,10 +2,17 @@ import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   inject,
+  OnDestroy,
+  OnInit,
   PLATFORM_ID,
   signal,
 } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -20,6 +27,9 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { ConfigModalComponent } from './shared/components/config-modal/config-modal.component';
 import { NotificationsDrawerComponent } from './shared/components/notifications-drawer/notifications-drawer.component';
 import { isPlatformBrowser } from '@angular/common';
+import { filter, Subscription } from 'rxjs';
+import { AuthService } from './shared/services/auth.service';
+import { UserDataService } from './shared/services/user-data.service';
 
 @Component({
   selector: 'app-root',
@@ -44,17 +54,44 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrl: './app.component.scss',
   viewProviders: [provideIcons({ featherSidebar })],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+  protected readonly date = new Date();
+
   public platformId = inject(PLATFORM_ID);
 
   public isCollapsed = signal(false);
   public isModalVisible = signal(false);
   public isDrawerVisible = signal(false);
-
   public isBrowser = signal(false);
+  public isHome = signal(false);
+  public isLogin = signal(false);
+  public isRegister = signal(false);
+
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  public userDataService = inject(UserDataService);
+
+  private subscriptions = new Subscription();
 
   constructor() {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
+  }
+
+  public ngOnInit(): void {
+    this.subscriptions.add(
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe((event: NavigationEnd) => {
+          this.isHome.set(event.urlAfterRedirects === '/');
+          console.log('user data', this.userDataService.getUserData());
+          this.isLogin.set(event.urlAfterRedirects.startsWith('/login'));
+          this.isRegister.set(event.urlAfterRedirects.startsWith('/register'));
+        })
+    );
+  }
+
+  public ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   public handleConfigModal() {
@@ -63,5 +100,17 @@ export class AppComponent {
 
   public handleNotificationsDrawer() {
     this.isDrawerVisible.set(true);
+  }
+
+  public logout() {
+    this.authService.logout();
+  }
+
+  public isExternalPage(): boolean {
+    if (this.isLogin() || this.isRegister()) {
+      return true;
+    }
+
+    return false;
   }
 }

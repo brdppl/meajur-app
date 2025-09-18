@@ -12,14 +12,26 @@ export class AnalyzeService {
 
   private http = inject(HttpClient);
 
-  public analyzeContract(rawText: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/analyses/analyze-file`, {
-      segment: 'Microempreendedor',
-      text: rawText,
-    });
+  public analyzeContract(rawText: string, token: string): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/analyses/analyze-file`,
+      {
+        segment: 'Microempreendedor',
+        text: rawText,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   }
 
-  public saveAnalysis(payload: IAnalysis): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/analyses/save`, payload);
+  public saveAnalysis(payload: IAnalysis, token: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/analyses/save`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }

@@ -1,8 +1,15 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 import { ContractsService } from './services/contracts.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -11,6 +18,8 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { FileModalComponent } from '../../shared/components/file-modal/file-modal.component';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { UserDataService } from '../../shared/services/user-data.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-contracts',
@@ -27,7 +36,7 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
   templateUrl: './contracts.component.html',
   styleUrl: './contracts.component.scss',
 })
-export class ContractsComponent {
+export class ContractsComponent implements OnInit, OnDestroy {
   public platformId = inject(PLATFORM_ID);
   public isBrowser = signal(false);
   public isModalVisible = signal(false);
@@ -36,6 +45,10 @@ export class ContractsComponent {
   public tabSelected = signal(1);
 
   private contractsService = inject(ContractsService);
+  private userDataService = inject(UserDataService);
+  private authService = inject(AuthService);
+
+  private subscriptions = new Subscription();
 
   constructor() {
     this.isBrowser.set(isPlatformBrowser(this.platformId));
@@ -47,16 +60,20 @@ export class ContractsComponent {
   public pageIndex = signal(1);
   public total = signal(0);
   public searchTerm = signal('');
+  public sortField = signal<string | null>(null);
+  public sortOrder = signal<string | null>(null);
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadDataFromServer(
       this.searchTerm(),
       this.pageIndex(),
       this.pageSize(),
-      null,
-      null
+      this.sortField(),
+      this.sortOrder()
     );
   }
+
+  public ngOnDestroy(): void {}
 
   public loadDataFromServer(
     searchTerm: string,
@@ -66,17 +83,19 @@ export class ContractsComponent {
     sortOrder: string | null
   ): void {
     this.isLoading.set(true);
-    this.listAnalyses(searchTerm, pageIndex, pageSize, sortField, sortOrder)
-      .subscribe({
-        next: (data: any) => {
-          this.total.set(data.count); // mock the total data here
-          this.listOfAnalyses.set(data.data);
-        },
-        error: () => {
-          this.listOfAnalyses.set([]);
-        },
-      })
-      .add(() => this.isLoading.set(false));
+    this.subscriptions.add(
+      this.listAnalyses(searchTerm, pageIndex, pageSize, sortField, sortOrder)
+        .subscribe({
+          next: (data: any) => {
+            this.total.set(data.count); // mock the total data here
+            this.listOfAnalyses.set(data.data);
+          },
+          error: () => {
+            this.listOfAnalyses.set([]);
+          },
+        })
+        .add(() => this.isLoading.set(false))
+    );
   }
 
   public onQueryParamsChange(params: NzTableQueryParams): void {
@@ -122,44 +141,59 @@ export class ContractsComponent {
       criteria = criteria.append('sortOrder', `${sortOrder}`);
     }
 
+    this.searchTerm.set(searchTerm);
+    this.pageIndex.set(pageIndex);
+    this.pageSize.set(pageSize);
+    this.sortField.set(sortField!);
+    this.sortOrder.set(sortOrder!);
+
     return this.contractsService.listAnalyses(
-      '68ae6e8ea1f79ec8f2bcede6',
-      criteria
+      this.userDataService.getUserId() ?? '',
+      criteria,
+      this.authService.getToken() ?? ''
     );
   }
 
   private listAnalysisById(id: string): void {
-    this.contractsService.listAnalysisById(id).subscribe({
-      next: (data) => {
-        this.modalData.set({
-          uid: data.data._id,
-          name: data.data.titleFile,
-          status: 'done',
-          response: { content: data.data.originalFile },
-        });
-        this.analysis.set(data.data.processedFile);
-        this.isModalVisible.set(true);
-      },
-      error: () => {
-        // Handle error
-      },
-    });
+    this.subscriptions.add(
+      this.contractsService
+        .listAnalysisById(id, this.authService.getToken() ?? '')
+        .subscribe({
+          next: (data) => {
+            this.modalData.set({
+              uid: data.data._id,
+              name: data.data.titleFile,
+              status: 'done',
+              response: { content: data.data.originalFile },
+            });
+            this.analysis.set(data.data.processedFile);
+            this.isModalVisible.set(true);
+          },
+          error: () => {
+            // Handle error
+          },
+        })
+    );
   }
 
   private removeAnalysis(id: string): void {
-    this.contractsService.removeAnalysis(id).subscribe({
-      next: () => {
-        this.loadDataFromServer(
-          this.searchTerm(),
-          this.pageIndex(),
-          this.pageSize(),
-          null,
-          null
-        );
-      },
-      error: () => {
-        // Handle error
-      },
-    });
+    this.subscriptions.add(
+      this.contractsService
+        .removeAnalysis(id, this.authService.getToken() ?? '')
+        .subscribe({
+          next: () => {
+            this.loadDataFromServer(
+              this.searchTerm(),
+              this.pageIndex(),
+              this.pageSize(),
+              this.sortField(),
+              this.sortOrder()
+            );
+          },
+          error: () => {
+            // Handle error
+          },
+        })
+    );
   }
 }

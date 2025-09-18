@@ -12,10 +12,18 @@ export class UploadService {
 
   private http = inject(HttpClient);
 
-  public uploadFile(file: File): Observable<any> {
+  public scanFile(file: File, token: string): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`${environment.apiUrl}/analyses/scan-file`, formData);
+    return this.http.post(
+      `${environment.apiUrl}/analyses/scan-file`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   }
 }

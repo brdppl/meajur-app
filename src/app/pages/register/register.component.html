@@ -1,0 +1,92 @@
+<div class="login">
+  <nz-card class="login__card" nzBordered="false">
+    <h2 class="login__title">Crie uma nova conta</h2>
+    <p class="login__subtitle">Crie a sua conta para continuar</p>
+
+    <form nz-form [formGroup]="form" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Digite seu e-mail">
+          <input
+            nz-input
+            placeholder="E-mail"
+            type="email"
+            nzSize="large"
+            formControlName="email"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="login__password">
+        <nz-form-control nzErrorTip="Digite sua senha">
+          <input
+            nz-input
+            placeholder="Senha"
+            [type]="passwordType()"
+            nzSize="large"
+            formControlName="password"
+          />
+          @if(form.get('password')!.value.length) {
+          <div class="login__password__toggle" (click)="togglePassword()">
+            <div class="login__password__toggle__overlay">
+              <nz-icon
+                [nzType]="
+                  passwordType() === 'password' ? 'eye-invisible' : 'eye'
+                "
+                nzTheme="outline"
+              />
+            </div>
+          </div>
+          }
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="login__password">
+        <nz-form-control [nzErrorTip]="passwordErrorTpl">
+          <input
+            nz-input
+            placeholder="Confirme sua senha"
+            [type]="confirmPasswordType()"
+            nzSize="large"
+            formControlName="confirmPassword"
+          />
+          @if(form.get('confirmPassword')!.value.length) {
+          <div
+            class="login__password__toggle"
+            (click)="toggleConfirmPassword()"
+          >
+            <div class="login__password__toggle__overlay">
+              <nz-icon
+                [nzType]="
+                  confirmPasswordType() === 'password' ? 'eye-invisible' : 'eye'
+                "
+                nzTheme="outline"
+              />
+            </div>
+          </div>
+          }
+          <ng-template #passwordErrorTpl let-control>
+            @if (control.errors?.['required']) { Confirme sua senha } @if
+            (control.errors?.['confirm']) { As senhas são diferentes }
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button
+        nz-button
+        nzType="primary"
+        class="login__btn"
+        nzSize="large"
+        [nzLoading]="isLoading()"
+      >
+        Cadastrar
+      </button>
+    </form>
+
+    <div class="login__divider">
+      <span>ou</span>
+    </div>
+
+    <div class="login__login-link">
+      <span>Já tem uma conta?</span>
+      <a [routerLink]="['/login']">Faça o login</a>
+    </div>
+  </nz-card>
+</div>
