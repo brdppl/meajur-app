@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigModalComponent } from './config-modal.component';
+import { UsageChartComponent } from './usage-chart.component';
 
-describe('ConfigModalComponent', () => {
-  let component: ConfigModalComponent;
-  let fixture: ComponentFixture<ConfigModalComponent>;
+describe('UsageChartComponent', () => {
+  let component: UsageChartComponent;
+  let fixture: ComponentFixture<UsageChartComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ConfigModalComponent]
+      imports: [UsageChartComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ConfigModalComponent);
+    fixture = TestBed.createComponent(UsageChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

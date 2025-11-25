@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { UsageChartComponent } from './components/usage-chart/usage-chart.component';
 
 @Component({
   selector: 'app-data',
-  imports: [],
+  imports: [UsageChartComponent],
   templateUrl: './data.component.html',
-  styleUrl: './data.component.scss'
+  styleUrl: './data.component.scss',
 })
-export class DataComponent {
-
-}
+export class DataComponent {}
