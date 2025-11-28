@@ -1,6 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { single } from '../../../../mock/usage-data.mock';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { BarVerticalComponent, NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-usage-chart',
@@ -8,8 +13,11 @@ import { single } from '../../../../mock/usage-data.mock';
   templateUrl: './usage-chart.component.html',
   styleUrl: './usage-chart.component.scss',
 })
-export class UsageChartComponent implements OnInit {
-  public single = signal<any[]>([]);
+export class UsageChartComponent implements OnChanges {
+  @Input() usage: any[] = [];
+  @Input() rangeDate = '';
+
+  @ViewChild('usageChart') usageChart: BarVerticalComponent = <any>{};
 
   public view: [number, number] = [700, 400];
 
@@ -18,25 +26,22 @@ export class UsageChartComponent implements OnInit {
   public showYAxis = true;
   public gradient = false;
   public showLegend = false;
-  public showXAxisLabel = true;
+  public showXAxisLabel = false;
   public xAxisLabel = '01/10/2025 - 03/10/2025';
-  public showYAxisLabel = true;
+  public showYAxisLabel = false;
   public yAxisLabel = 'Uso diário';
   public isTooltipDisabled = true;
 
   public customColors: { name: string; value: string }[] = [];
 
-  public ngOnInit(): void {
-    this.fetchData();
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes['usage'].currentValue && changes['usage'].currentValue.length) {
+      this.setChartColorScheme(this.usage);
+    }
   }
 
   public onSelect(event: any): void {
     console.log(event);
-  }
-
-  private fetchData(): void {
-    this.single.set(single);
-    this.setChartColorScheme(single);
   }
 
   private setChartColorScheme(data: any): void {

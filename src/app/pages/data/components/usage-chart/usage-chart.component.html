@@ -1,15 +1,18 @@
+@if (usage && usage.length > 0) {
 <ngx-charts-bar-vertical
   [customColors]="customColors"
-  [results]="single()"
+  [results]="usage"
   [gradient]="gradient"
   [xAxis]="showXAxis"
   [yAxis]="showYAxis"
   [legend]="showLegend"
   [showXAxisLabel]="showXAxisLabel"
   [showYAxisLabel]="showYAxisLabel"
-  [xAxisLabel]="xAxisLabel"
+  [xAxisLabel]="rangeDate"
   [yAxisLabel]="yAxisLabel"
   [tooltipDisabled]="isTooltipDisabled"
   (select)="onSelect($event)"
 >
 </ngx-charts-bar-vertical>
+
+}

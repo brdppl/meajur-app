@@ -30,6 +30,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { filter, Subscription } from 'rxjs';
 import { AuthService } from './shared/services/auth.service';
 import { UserDataService } from './shared/services/user-data.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -59,6 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public platformId = inject(PLATFORM_ID);
 
+  public version = signal(environment.version);
   public isCollapsed = signal(false);
   public isModalVisible = signal(false);
   public isDrawerVisible = signal(false);

@@ -14,7 +14,7 @@
           nzTheme="outline"
           (click)="isCollapsed.set(!isCollapsed())"
         />
-        <span class="logo__name">Meajur v1.0.0</span>
+        <span class="logo__name">Meajur v{{ version() }}</span>
       </li>
       <li nz-menu-item [nzMatchRouter]="true" [nzMatchRouterExact]="true">
         <a [routerLink]="['/']">
