@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
+import { IResponse } from '../models/response.interface';
 
 const TOKEN_KEY = 'auth_token';
 
@@ -48,12 +49,12 @@ export class AuthService {
   private validateToken() {
     const token = this.getToken() ?? '';
     this.http
-      .post(`${environment.apiUrl}/auth/validate-token`, { token })
+      .post<IResponse>(`${environment.apiUrl}/auth/validate-token`, { token })
       .pipe(take(1))
       .subscribe({
         next: (response) => {
           console.log('Token válido:', response);
-          if (!response) {
+          if (!response.data) {
             this.logout();
           }
         },

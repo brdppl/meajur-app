@@ -58,3 +58,30 @@
 .ant-form-item {
   margin-bottom: var(--16px) !important;
 }
+
+.ant-picker-dropdown {
+  .ant-picker-panel-container {
+    border-radius: var(--12px) !important;
+
+    .ant-tag {
+      border-radius: var(--12px) !important;
+    }
+  }
+}
+
+.ant-table {
+  border-radius: var(--12px) !important;
+
+  thead {
+    tr {
+      th {
+        &:first-child {
+          border-top-left-radius: var(--12px) !important;
+        }
+        &:last-child {
+          border-top-right-radius: var(--12px) !important;
+        }
+      }
+    }
+  }
+}

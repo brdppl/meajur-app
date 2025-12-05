@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { IUser } from '../models/user.interface';
 import { LocalStorageService } from 'ngx-webstorage';
+import { IResponse } from '../models/response.interface';
 
 const USER_DATA_KEY = 'user_data_token';
 const USER_ID_KEY = 'user_id_token';
@@ -40,11 +41,14 @@ export class UserDataService {
     this.storage.clear(USER_DATA_KEY);
   }
 
-  public fetchUserData(token: string): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/users/${this.getUserId()}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  public fetchUserData(token: string): Observable<IResponse> {
+    return this.http.get<IResponse>(
+      `${environment.apiUrl}/users/${this.getUserId()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   }
 }

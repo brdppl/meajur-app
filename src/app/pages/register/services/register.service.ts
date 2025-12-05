@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { IRegister } from '../models/register.interface';
+import { IResponse } from '../../../shared/models/response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,10 @@ import { IRegister } from '../models/register.interface';
 export class RegisterService {
   private http = inject(HttpClient);
 
-  public register(payload: IRegister): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/users/register`, payload);
+  public register(payload: IRegister): Observable<IResponse> {
+    return this.http.post<IResponse>(
+      `${environment.apiUrl}/users/register`,
+      payload
+    );
   }
 }

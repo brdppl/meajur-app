@@ -109,17 +109,17 @@ export class LoginComponent implements OnInit, OnDestroy {
         .login(payload)
         .pipe(
           switchMap((response) => {
-            this.authService.setToken(response.access_token);
-            this.userDataService.setUserId(response.userId);
+            this.authService.setToken(response.data.access_token);
+            this.userDataService.setUserId(response.data.userId);
 
             return this.userDataService.fetchUserData(
-              response.access_token ?? ''
+              response.data.access_token ?? ''
             );
           })
         )
         .subscribe({
           next: (response) => {
-            this.userDataService.setUserData(response);
+            this.userDataService.setUserData(response.data);
             this.router.navigateByUrl('/');
           },
           error: (error) => {

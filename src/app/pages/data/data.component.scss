@@ -1,0 +1,14 @@
+.data {
+  &__header {
+    margin-bottom: var(--24px);
+
+    nz-range-picker {
+      padding: var(--8px) var(--12px);
+      border-radius: var(--12px);
+    }
+  }
+
+  &__title {
+    margin: 0;
+  }
+}

@@ -20,6 +20,7 @@ import { FileModalComponent } from '../../shared/components/file-modal/file-moda
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { UserDataService } from '../../shared/services/user-data.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { IResponse } from '../../shared/models/response.interface';
 
 @Component({
   selector: 'app-contracts',
@@ -86,9 +87,9 @@ export class ContractsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.listAnalyses(searchTerm, pageIndex, pageSize, sortField, sortOrder)
         .subscribe({
-          next: (data: any) => {
-            this.total.set(data.count); // mock the total data here
-            this.listOfAnalyses.set(data.data);
+          next: (response) => {
+            this.total.set(response.data.count); // mock the total data here
+            this.listOfAnalyses.set(response.data.data);
           },
           error: () => {
             this.listOfAnalyses.set([]);
@@ -130,7 +131,7 @@ export class ContractsComponent implements OnInit, OnDestroy {
     pageSize: number,
     sortField: string | null,
     sortOrder: string | null
-  ): Observable<any> {
+  ): Observable<IResponse> {
     let criteria = new HttpParams()
       .append('q', `${searchTerm}`)
       .append('page', `${pageIndex}`)
@@ -159,14 +160,14 @@ export class ContractsComponent implements OnInit, OnDestroy {
       this.contractsService
         .listAnalysisById(id, this.authService.getToken() ?? '')
         .subscribe({
-          next: (data) => {
+          next: (response) => {
             this.modalData.set({
-              uid: data.data._id,
-              name: data.data.titleFile,
+              uid: response.data.data._id,
+              name: response.data.data.titleFile,
               status: 'done',
-              response: { content: data.data.originalFile },
+              response: { content: response.data.data.originalFile },
             });
-            this.analysis.set(data.data.processedFile);
+            this.analysis.set(response.data.data.processedFile);
             this.isModalVisible.set(true);
           },
           error: () => {

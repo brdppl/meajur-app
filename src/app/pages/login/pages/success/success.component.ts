@@ -26,7 +26,7 @@ export class SuccessComponent implements OnInit {
 
         this.userDataService.fetchUserData(token).subscribe({
           next: (userData) => {
-            this.userDataService.setUserData(userData);
+            this.userDataService.setUserData(userData.data);
             this.router.navigateByUrl('/');
           },
           error: (err) => {

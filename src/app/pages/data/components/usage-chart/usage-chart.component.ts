@@ -2,52 +2,111 @@ import {
   Component,
   Input,
   OnChanges,
+  signal,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { BarVerticalComponent, NgxChartsModule } from '@swimlane/ngx-charts';
+import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels?: ApexDataLabels;
+  plotOptions?: ApexPlotOptions;
+  yaxis?: ApexYAxis;
+  xaxis?: ApexXAxis;
+  fill?: ApexFill;
+  tooltip?: ApexTooltip;
+  stroke?: ApexStroke;
+  legend?: ApexLegend;
+};
 
 @Component({
   selector: 'app-usage-chart',
-  imports: [NgxChartsModule],
+  imports: [NgApexchartsModule],
   templateUrl: './usage-chart.component.html',
   styleUrl: './usage-chart.component.scss',
 })
 export class UsageChartComponent implements OnChanges {
   @Input() usage: any[] = [];
-  @Input() rangeDate = '';
+  @ViewChild('chart') chart: ChartComponent | undefined;
 
-  @ViewChild('usageChart') usageChart: BarVerticalComponent = <any>{};
+  public chartData = signal<any[]>([]);
 
-  public view: [number, number] = [700, 400];
-
-  // options
-  public showXAxis = true;
-  public showYAxis = true;
-  public gradient = false;
-  public showLegend = false;
-  public showXAxisLabel = false;
-  public xAxisLabel = '01/10/2025 - 03/10/2025';
-  public showYAxisLabel = false;
-  public yAxisLabel = 'Uso diário';
-  public isTooltipDisabled = true;
-
-  public customColors: { name: string; value: string }[] = [];
+  public chartOptions: any = <ChartOptions>{
+    series: [
+      {
+        name: 'Usos neste dia',
+        data: [
+          { x: 'Jan', y: 3 },
+          { x: 'Feb', y: 2 },
+          { x: 'Mar', y: 1 },
+        ],
+      },
+    ],
+    chart: {
+      type: 'bar',
+      height: 350,
+    },
+    xaxis: {
+      labels: {
+        formatter: (value: string, _: number, opts: any) => {
+          if (
+            opts === undefined ||
+            opts.i === undefined ||
+            this.chartOptions.series[0].data.length === 0
+          ) {
+            return value;
+          }
+          if (
+            opts.i === 0 ||
+            opts.i === this.chartOptions.series[0].data.length - 1
+          ) {
+            return value;
+          }
+          return '';
+        },
+        rotate: 0,
+      },
+    },
+    yaxis: {
+      labels: {
+        formatter: (val: number) => val.toFixed(0),
+      },
+    },
+  };
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['usage'].currentValue && changes['usage'].currentValue.length) {
-      this.setChartColorScheme(this.usage);
+    if (
+      changes['usage'] &&
+      changes['usage'].currentValue &&
+      changes['usage'].currentValue?.length
+    ) {
+      this.chartData.set(changes['usage'].currentValue);
+      this.updateChartData();
     }
   }
 
-  public onSelect(event: any): void {
-    console.log(event);
+  public isLoading(): boolean {
+    return !this.chartData() || this.chartData().length <= 0;
   }
 
-  private setChartColorScheme(data: any): void {
-    this.customColors = data.map((item: any) => ({
-      name: item.name,
-      value: '#1890ff',
+  private updateChartData(): void {
+    const newData = this.chartData()?.map((item) => ({
+      x: item.name,
+      y: item.value,
     }));
+    this.chartOptions.series =
+      this.chartOptions.series && this.chartOptions.series.length
+        ? [
+            {
+              ...this.chartOptions.series[0],
+              data: newData,
+            },
+          ]
+        : [];
+
+    this.chart?.updateSeries(this.chartOptions.series, true);
+    this.chart?.updateOptions(this.chartOptions, true);
   }
 }

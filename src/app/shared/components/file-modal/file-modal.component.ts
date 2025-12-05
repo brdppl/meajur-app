@@ -97,8 +97,8 @@ export class FileModalComponent implements OnChanges {
       .subscribe({
         next: (response) => {
           console.log('Analysis result:', response);
-          this.analysis.set(response.result);
-          this.analyzeService.analyzedContract.set(response.result);
+          this.analysis.set(response.data.result);
+          this.analyzeService.analyzedContract.set(response.data.result);
           this.tabSelected.set(1);
           this.saveAnalysis();
         },

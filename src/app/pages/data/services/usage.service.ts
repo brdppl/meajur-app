@@ -4,6 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from '../../../../environments/environment.development';
 import { AuthService } from '../../../shared/services/auth.service';
+import { IResponse } from '../../../shared/models/response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,8 @@ export class UsageService {
   private authService = inject(AuthService);
   private userDataService = inject(UserDataService);
 
-  public getUsageByDate(criteria: any): Observable<any> {
-    return this.http.get(
+  public getUsageByDate(criteria: any): Observable<IResponse> {
+    return this.http.get<IResponse>(
       `${environment.apiUrl}/data/usage/${
         this.userDataService.getUserId() ?? ''
       }`,
