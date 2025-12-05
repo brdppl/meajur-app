@@ -1,6 +1,17 @@
-<h1>Meus usos</h1>
+<div class="data">
+  <div class="data__header" nz-flex nzJustify="space-between" nzAlign="center">
+    <h1 class="data__title">Meus usos</h1>
+    <nz-range-picker
+      [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
+      [nzDisabledDate]="disabledDate"
+      (nzOnCalendarChange)="onDateChange($event)"
+      nzFormat="dd/MM/yyyy"
+      [nzRanges]="ranges"
+    ></nz-range-picker>
+  </div>
 
-<app-usage-chart
-  [usage]="usage()"
-  [rangeDate]="utilsService.formatRangeDate(startDate(), endDate())"
-/>
+  <nz-spin [nzSpinning]="isLoading()" nzTip="Buscando dados...">
+    <app-usage-chart [usage]="usage()" />
+  </nz-spin>
+</div>

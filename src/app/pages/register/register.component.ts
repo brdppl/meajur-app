@@ -127,7 +127,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         .register(payload)
         .subscribe({
           next: (response) => {
-            this.messageService.success(response.message);
+            this.messageService.success(response.data.message);
             this.router.navigateByUrl('/login');
           },
           error: (error) => {

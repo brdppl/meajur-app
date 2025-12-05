@@ -94,14 +94,15 @@ export class HomeComponent implements OnInit {
       .scanFile(item.postFile as File, this.authService.getToken() ?? '')
       .subscribe({
         next: (response) => {
+          console.log('UPLOADDDDDD', response);
           this.isScanning.set(false);
-          item.onSuccess!(response, item.file, event);
+          item.onSuccess!(response.data, item.file, event);
           this.analyzeService.analyzedContract.set('');
           this.modalData.set({
             uid: item.file.uid,
             name: item.file.name,
             status: item.file.status,
-            response: response,
+            response: response.data,
           });
         },
         error: (error) => {

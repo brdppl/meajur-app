@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ILogin } from '../models/login.interface';
+import { IResponse } from '../../../shared/models/response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,10 @@ import { ILogin } from '../models/login.interface';
 export class LoginService {
   private http = inject(HttpClient);
 
-  public login(payload: ILogin): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/auth/login`, payload);
+  public login(payload: ILogin): Observable<IResponse> {
+    return this.http.post<IResponse>(
+      `${environment.apiUrl}/auth/login`,
+      payload
+    );
   }
 }
