@@ -100,7 +100,7 @@ export class FileModalComponent implements OnChanges {
           this.analysis.set(response.data.result);
           this.analyzeService.analyzedContract.set(response.data.result);
           this.tabSelected.set(1);
-          this.saveAnalysis();
+          this.saveAnalysis(Number(response.responseTime));
         },
         error: (error) => {
           console.error('Error analyzing contract:', error);
@@ -113,12 +113,15 @@ export class FileModalComponent implements OnChanges {
       });
   }
 
-  private saveAnalysis(): void {
+  private saveAnalysis(responseTime: number): void {
     const payload: IAnalysis = {
       userId: this.userDataService.getUserId() ?? '',
       titleFile: this.data().name ?? 'No title',
       originalFile: this.data().response.content ?? 'No file content',
       processedFile: this.analysis() ?? 'No analysis result',
+      responseTime,
+      wordCount: this.data().response.wordCount ?? 0,
+      readTime: this.data().response.readTime ?? 0,
     };
 
     this.analyzeService

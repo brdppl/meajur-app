@@ -3,4 +3,7 @@ export interface IAnalysis {
   titleFile: string;
   originalFile: string;
   processedFile: string;
+  responseTime?: number;
+  wordCount?: number;
+  readTime?: number;
 }

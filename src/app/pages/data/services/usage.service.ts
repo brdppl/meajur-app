@@ -27,4 +27,30 @@ export class UsageService {
       }
     );
   }
+
+  public getSavedDocuments(): Observable<IResponse> {
+    return this.http.get<IResponse>(
+      `${environment.apiUrl}/data/contracts/${
+        this.userDataService.getUserId() ?? ''
+      }`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken() ?? ''}`,
+        },
+      }
+    );
+  }
+
+  public getTimeSaved(): Observable<IResponse> {
+    return this.http.get<IResponse>(
+      `${environment.apiUrl}/data/time-saved/${
+        this.userDataService.getUserId() ?? ''
+      }`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken() ?? ''}`,
+        },
+      }
+    );
+  }
 }

@@ -54,7 +54,7 @@ export class AuthService {
       .subscribe({
         next: (response) => {
           console.log('Token válido:', response);
-          if (!response.data) {
+          if (!response || !response.data) {
             this.logout();
           }
         },

@@ -11,4 +11,30 @@
   &__title {
     margin: 0;
   }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--24px);
+  }
+
+  &__card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    
+    &__title {
+      font-weight: 700;
+      font-size: var(--48px);
+      margin-right: var(--4px);
+      color: var(--primary-color);
+    }
+
+    &__subtitle {
+      font-size: var(--18px);
+      white-space: nowrap;
+    }
+  }
 }

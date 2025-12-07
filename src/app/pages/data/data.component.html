@@ -11,7 +11,44 @@
     ></nz-range-picker>
   </div>
 
-  <nz-spin [nzSpinning]="isLoading()" nzTip="Buscando dados...">
-    <app-usage-chart [usage]="usage()" />
-  </nz-spin>
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <div class="data__container">
+        <nz-card class="data__card">
+          <nz-spin [nzSpinning]="isLoadingSavedDocuments()">
+            <span class="data__card__title">{{ savedDocuments() }}</span>
+            <span class="data__card__subtitle">{{
+              cardSavedDocumentsLabel(savedDocuments())
+            }}</span>
+          </nz-spin>
+        </nz-card>
+
+        <nz-card class="data__card">
+          <nz-spin [nzSpinning]="isLoadingRemainingUses()">
+            <span class="data__card__title">{{ remainingUses() }}</span>
+            <span class="data__card__subtitle">{{
+              cardRemainingUsesLabel(remainingUses())
+            }}</span>
+          </nz-spin>
+        </nz-card>
+
+        <nz-card class="data__card">
+          <nz-spin [nzSpinning]="isLoadingTimeSaved()">
+            <span class="data__card__title">{{ cardTimeSavedLabel() }}</span>
+            <span class="data__card__subtitle">Poupados até agora</span>
+          </nz-spin>
+        </nz-card>
+      </div>
+    </div>
+  </div>
+
+  <br />
+
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <nz-spin [nzSpinning]="isLoading()" nzTip="Buscando dados...">
+        <app-usage-chart [usage]="usage()" />
+      </nz-spin>
+    </div>
+  </div>
 </div>
