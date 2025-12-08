@@ -9,11 +9,12 @@
   >
     <ul nz-menu class="menu" nzTheme="light" nzMode="inline">
       <li class="logo" [class]="{ logo__collapsed: isCollapsed() }">
-        <nz-icon
+        <!-- <nz-icon
           nzType="open-a-i"
           nzTheme="outline"
           (click)="isCollapsed.set(!isCollapsed())"
-        />
+        /> -->
+        <img src="favicon.png" style="width: 18px" />
         <span class="logo__name">Meajur v{{ version() }}</span>
       </li>
       <li nz-menu-item [nzMatchRouter]="true" [nzMatchRouterExact]="true">

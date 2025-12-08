@@ -48,7 +48,34 @@ export class UsageChartComponent implements OnChanges {
       type: 'bar',
       height: 350,
     },
+    plotOptions: {
+      bar: {
+        hideZeroBarsWhenGrouped: true,
+        borderRadius: 0,
+        dataLabels: {
+          position: 'center', // top, center, bottom
+        },
+      },
+    },
+    dataLabels: {
+      enabled: true,
+      offsetY: 0, // -20
+      style: {
+        fontSize: '12px',
+        // colors: ['#304758'],
+      },
+    },
     xaxis: {
+      position: 'bottom',
+      axisBorder: {
+        show: true,
+      },
+      axisTicks: {
+        show: true,
+      },
+      tooltip: {
+        enabled: true,
+      },
       labels: {
         formatter: (value: string, _: number, opts: any) => {
           if (
@@ -70,6 +97,12 @@ export class UsageChartComponent implements OnChanges {
       },
     },
     yaxis: {
+      axisBorder: {
+        show: true,
+      },
+      axisTicks: {
+        show: true,
+      },
       labels: {
         formatter: (val: number) => val.toFixed(0),
       },
