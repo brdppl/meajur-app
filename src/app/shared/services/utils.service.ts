@@ -15,4 +15,8 @@ export class UtilsService {
   public formatRangeDate(startDate: string, endDate: string): string {
     return `${this.parseDate(startDate)} - ${this.parseDate(endDate)}`;
   }
+
+  public truncate(text: string, limit = 24): string {
+    return text.length > limit ? `${text.slice(0, limit)}...` : text;
+  }
 }

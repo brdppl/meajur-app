@@ -119,7 +119,9 @@ export class DataComponent implements OnInit, OnDestroy {
   }
 
   public cardRemainingUsesLabel(value: number): string {
-    return value !== 1 ? 'Usos restantes neste mês' : 'Uso restante neste mês';
+    return value !== 1
+      ? 'Créditos restantes neste mês'
+      : 'Crédito restante neste mês';
   }
 
   public cardTimeSavedLabel(): string {

@@ -1,0 +1,56 @@
+.card {
+  min-height: 500px;
+  position: relative;
+
+  &__title {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: var(--24px);
+  }
+
+  &__pricing {
+    font-weight: 700;
+    font-size: var(--32px);
+    margin-bottom: var(--8px);
+
+    small {
+      font-size: var(--12px);
+      font-weight: 500;
+    }
+  }
+
+  &__subtitle {
+    font-weight: 500;
+    font-size: var(--16px);
+    margin-bottom: var(--8px);
+    min-height: 50px;
+  }
+
+  &__button {
+    margin: var(--8px) 0;
+  }
+
+  &__items {
+    margin-top: var(--16px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--8px);
+  }
+
+  &__description {
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  &__footer {
+    position: absolute;
+    left: var(--24px);
+    bottom: var(--24px);
+
+    p {
+      font-size: var(--12px);
+      margin: 0;
+    }
+  }
+}

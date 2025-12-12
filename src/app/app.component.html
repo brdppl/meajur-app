@@ -43,25 +43,24 @@
         [nzDropdownMenu]="menu"
         [class]="{ user__collapsed: isCollapsed() }"
       >
-        @if(!userDataService.getUserData()?.photo) {
-        <nz-avatar nzSize="small" nzIcon="user" />
-        } @else {
-        <nz-avatar
-          nzSize="small"
-          [nzSrc]="userDataService.getUserData()?.photo"
-        />
-        }
+        <div class="user__photo">
+          @if(!userDataService.getUserData()?.photo) {
+          <nz-avatar nzSize="small" nzIcon="user" />
+          } @else {
+          <nz-avatar
+            nzSize="small"
+            [nzSrc]="userDataService.getUserData()?.photo"
+          />
+          }
+        </div>
         <div class="user__info">
-          <!-- <span class="user__info__name">Bernardo Sampaio</span> -->
           <span class="user__info__name">
-            @if(userDataService.getUserData()?.name) {
-            {{ userDataService.getUserData()?.name }}
-            {{ userDataService.getUserData()?.lastName }}
-            } @else {
-            {{ userDataService.getUserData()?.email }}
-            }
+            {{ utilsService.truncate(showUserName()) }}
           </span>
-          <span class="user__info__plan">Grátis · 7 dias</span>
+          <span class="user__info__plan"
+            >{{ userDataService.getUserData()?.plan?.name }} ·
+            {{ userDataService.getUserData()?.plan?.credits }} créditos</span
+          >
         </div>
       </li>
     </ul>
@@ -119,6 +118,12 @@
       <!-- beco_sampa&#64;hotmail.com -->
       {{ userDataService.getUserData()?.email }}
     </li>
+    <a [routerLink]="['/pricing']">
+      <li nz-menu-item>
+        <nz-icon nzType="crown" nzTheme="outline" />
+        Alterar meu plano
+      </li>
+    </a>
     <li nz-menu-item (click)="handleConfigModal()">
       <nz-icon nzType="setting" nzTheme="outline" />
       Configurações

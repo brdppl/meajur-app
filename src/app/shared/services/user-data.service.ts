@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { IUser } from '../models/user.interface';
 import { LocalStorageService } from 'ngx-webstorage';
 import { IResponse } from '../models/response.interface';
+import { AuthService } from './auth.service';
 
 const USER_DATA_KEY = 'user_data_token';
 const USER_ID_KEY = 'user_id_token';
@@ -43,7 +44,18 @@ export class UserDataService {
 
   public fetchUserData(token: string): Observable<IResponse> {
     return this.http.get<IResponse>(
-      `${environment.apiUrl}/users/${this.getUserId()}`,
+      `${environment.apiUrl}/users/${this.getUserId() ?? ''}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
+  public fetchUserPlan(token: string): Observable<IResponse> {
+    return this.http.get<IResponse>(
+      `${environment.apiUrl}/users/${this.getUserId() ?? ''}/plan`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
