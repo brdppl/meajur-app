@@ -17,6 +17,6 @@ export class UtilsService {
   }
 
   public truncate(text: string, limit = 24): string {
-    return text.length > limit ? `${text.slice(0, limit)}...` : text;
+    return text?.length > limit ? `${text.slice(0, limit)}...` : text;
   }
 }

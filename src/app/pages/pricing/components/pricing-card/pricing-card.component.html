@@ -11,6 +11,8 @@
       class="card__button"
       nzSize="large"
       [disabled]="isCurrentPlan(title)"
+      (click)="onChangePlan(title)"
+      [nzLoading]="isLoading()"
     >
       @if (!isCurrentPlan(title)) {
       <span>Assinar {{ title }}</span>

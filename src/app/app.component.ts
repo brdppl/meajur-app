@@ -92,7 +92,9 @@ export class AppComponent implements OnInit, OnDestroy {
           this.isLogin.set(event.urlAfterRedirects.startsWith('/login'));
           this.isRegister.set(event.urlAfterRedirects.startsWith('/register'));
           this.isPricing.set(event.urlAfterRedirects.startsWith('/pricing'));
-          this.getUserPlan();
+          if (this.authService.getToken()) {
+            this.getUserPlan();
+          }
         })
     );
   }

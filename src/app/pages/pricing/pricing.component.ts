@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -28,5 +28,10 @@ export class PricingComponent {
 
   public handleClose(): void {
     this.router.navigateByUrl('/');
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscPressed(_: Event) {
+    this.handleClose();
   }
 }

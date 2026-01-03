@@ -104,7 +104,9 @@ export class FileModalComponent implements OnChanges {
         },
         error: (error) => {
           console.error('Error analyzing contract:', error);
-          this.messageService.error('Erro ao analisar o contrato.');
+          this.messageService.error(
+            error?.error?.error ?? 'Erro ao analisar o contrato.'
+          );
         },
       })
       .add(() => {
