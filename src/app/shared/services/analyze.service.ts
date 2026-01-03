@@ -1,3 +1,4 @@
+import { UserDataService } from './user-data.service';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -11,6 +12,7 @@ import { IResponse } from '../models/response.interface';
 export class AnalyzeService {
   public analyzedContract = signal('');
 
+  private userDataService = inject(UserDataService);
   private http = inject(HttpClient);
 
   public analyzeContract(
@@ -22,6 +24,7 @@ export class AnalyzeService {
       {
         segment: 'Microempreendedor',
         text: rawText,
+        userId: this.userDataService.getUserId(),
       },
       {
         headers: {

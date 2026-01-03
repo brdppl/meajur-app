@@ -108,7 +108,8 @@ export class HomeComponent implements OnInit {
         error: (error) => {
           this.isScanning.set(false);
           console.error('Upload failed:', error);
-          item.onError!(error, item.file);
+          this.messageService.error(error.error.error);
+          // item.onError!(error, item.file);
         },
       });
   };
@@ -123,7 +124,7 @@ export class HomeComponent implements OnInit {
     }
     if (info.file.status === 'done') {
       this.messageService.success(
-        `${info.file.name} file uploaded successfully`
+        `${info.file.name} foi carregado com sucesso.`
       );
     } else if (info.file.status === 'error') {
       this.messageService.error(`${info.file.name} file upload failed.`);
@@ -137,7 +138,7 @@ export class HomeComponent implements OnInit {
 
   public handleDelete(): void {
     this.clearData();
-    this.messageService.success('File list cleared successfully');
+    this.messageService.success('Arquivo removido');
   }
 
   public handleCloseModal(isVisible: boolean): void {

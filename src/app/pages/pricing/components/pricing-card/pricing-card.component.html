@@ -1,0 +1,41 @@
+<nz-card class="card" [nzTitle]="titleTpl">
+  <div class="card__box">
+    <p class="card__pricing">
+      {{ cost | currency : "BRL" }} <small>/ mês</small>
+    </p>
+    <p class="card__subtitle">{{ subtitle }}</p>
+    <button
+      nz-button
+      nzType="primary"
+      nzBlock
+      class="card__button"
+      nzSize="large"
+      [disabled]="isCurrentPlan(title)"
+      (click)="onChangePlan(title)"
+      [nzLoading]="isLoading()"
+    >
+      @if (!isCurrentPlan(title)) {
+      <span>Assinar {{ title }}</span>
+      } @else {
+      <span>Plano atual</span>
+      }
+    </button>
+    @for(item of benefits; track item.text) {
+    <div class="card__items">
+      @if (item.icon.includes('ion')) {
+      <ng-icon [name]="item.icon" />
+      } @else {
+      <nz-icon [nzType]="item.icon" nzTheme="outline" />
+      }
+      <p class="card__description">{{ item.text }}</p>
+    </div>
+    }
+  </div>
+  <div class="card__footer">
+    <p>*os créditos não são cumulativos</p>
+  </div>
+</nz-card>
+
+<ng-template #titleTpl>
+  <div class="card__title">{{ title }}</div>
+</ng-template>

@@ -1,3 +1,4 @@
+import { UserDataService } from './../../shared/services/user-data.service';
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { UsageChartComponent } from './components/usage-chart/usage-chart.component';
 import { UsageService } from './services/usage.service';
@@ -33,9 +34,10 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 })
 export class DataComponent implements OnInit, OnDestroy {
   private usageService = inject(UsageService);
-  private subscriptions = new Subscription();
+  private userDataService = inject(UserDataService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private subscriptions = new Subscription();
 
   public today = new Date();
   public date: Date[] | null = null;
@@ -48,11 +50,11 @@ export class DataComponent implements OnInit, OnDestroy {
 
   public isLoading = signal(false);
   public isLoadingSavedDocuments = signal(false);
-  public isLoadingRemainingUses = signal(false);
+  public isLoadingUsedCredits = signal(true);
   public isLoadingTimeSaved = signal(false);
 
   public savedDocuments = signal(0);
-  public remainingUses = signal(0);
+  public usedCredits = signal(0);
   public timeSaved = signal(0);
 
   public ranges = {
@@ -85,6 +87,7 @@ export class DataComponent implements OnInit, OnDestroy {
     this.getDateFromQueryParams();
     this.getSavedDocuments();
     this.getTimeSaved();
+    this.getUsedCredits();
   }
 
   public ngOnDestroy(): void {
@@ -118,8 +121,10 @@ export class DataComponent implements OnInit, OnDestroy {
     return value !== 1 ? 'Contratos salvos' : 'Contrato salvo';
   }
 
-  public cardRemainingUsesLabel(value: number): string {
-    return value !== 1 ? 'Usos restantes neste mês' : 'Uso restante neste mês';
+  public cardUsedCreditsLabel(value: number): string {
+    return value !== 1
+      ? 'Créditos usados neste mês'
+      : 'Crédito usado neste mês';
   }
 
   public cardTimeSavedLabel(): string {
@@ -181,5 +186,12 @@ export class DataComponent implements OnInit, OnDestroy {
           this.isLoadingTimeSaved.set(false);
         })
     );
+  }
+
+  private getUsedCredits(): void {
+    const { totalCredits, credits } = this.userDataService.getUserData()?.plan!;
+    const usedCredits = totalCredits - credits;
+    this.usedCredits.set(usedCredits);
+    this.isLoadingUsedCredits.set(false);
   }
 }

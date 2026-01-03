@@ -1,0 +1,35 @@
+<nz-header class="header">
+  <button
+    nz-button
+    nzType="text"
+    nzShape="circle"
+    nzSize="large"
+    (click)="handleClose()"
+  >
+    <nz-icon nzType="close" />
+  </button>
+</nz-header>
+<nz-content class="container">
+  <h1 class="container__title">Escolha o melhor plano para você</h1>
+  <div class="container__content">
+    <app-pricing-card />
+    <app-pricing-card
+      title="Basic"
+      [cost]="pricingEnum.BASIC"
+      subtitle="Faça mais pagando pouco"
+      [benefits]="basicBenefits"
+    />
+    <app-pricing-card
+      title="Plus"
+      [cost]="pricingEnum.PLUS"
+      subtitle="Desbloqueie recursos e créditos a mais"
+      [benefits]="plusBenefits"
+    />
+    <app-pricing-card
+      title="Pro"
+      [cost]="pricingEnum.PRO"
+      subtitle="Desfrute da melhor experiência disponível"
+      [benefits]="proBenefits"
+    />
+  </div>
+</nz-content>

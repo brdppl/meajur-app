@@ -24,10 +24,10 @@
         </nz-card>
 
         <nz-card class="data__card">
-          <nz-spin [nzSpinning]="isLoadingRemainingUses()">
-            <span class="data__card__title">{{ remainingUses() }}</span>
+          <nz-spin [nzSpinning]="isLoadingUsedCredits()">
+            <span class="data__card__title">{{ usedCredits() }}</span>
             <span class="data__card__subtitle">{{
-              cardRemainingUsesLabel(remainingUses())
+              cardUsedCreditsLabel(usedCredits())
             }}</span>
           </nz-spin>
         </nz-card>

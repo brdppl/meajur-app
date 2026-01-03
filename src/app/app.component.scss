@@ -1,7 +1,7 @@
 .menu {
   position: relative;
   overflow: hidden;
-  height: 100vh;
+  height: 100dvh;
 }
 
 .logo {
@@ -41,7 +41,8 @@
   left: 0;
   width: calc(100% - var(--8px));
   margin: var(--4px);
-  padding-left: var(--24px);
+  padding-left: var(--8px);
+  padding-right: var(--8px);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -85,7 +86,7 @@
 }
 
 .container {
-  height: 100vh;
+  height: 100dvh;
 
   &__header {
     background: var(--background-color);

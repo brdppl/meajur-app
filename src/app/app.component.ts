@@ -1,3 +1,4 @@
+import { UtilsService } from './shared/services/utils.service';
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -68,10 +69,12 @@ export class AppComponent implements OnInit, OnDestroy {
   public isHome = signal(false);
   public isLogin = signal(false);
   public isRegister = signal(false);
+  public isPricing = signal(false);
 
   private router = inject(Router);
   private authService = inject(AuthService);
   public userDataService = inject(UserDataService);
+  public utilsService = inject(UtilsService);
 
   private subscriptions = new Subscription();
 
@@ -88,6 +91,10 @@ export class AppComponent implements OnInit, OnDestroy {
           console.log('user data', this.userDataService.getUserData());
           this.isLogin.set(event.urlAfterRedirects.startsWith('/login'));
           this.isRegister.set(event.urlAfterRedirects.startsWith('/register'));
+          this.isPricing.set(event.urlAfterRedirects.startsWith('/pricing'));
+          if (this.authService.getToken()) {
+            this.getUserPlan();
+          }
         })
     );
   }
@@ -109,10 +116,35 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public isExternalPage(): boolean {
-    if (this.isLogin() || this.isRegister()) {
+    if (this.isLogin() || this.isRegister() || this.isPricing()) {
       return true;
     }
 
     return false;
+  }
+
+  public showUserName(): string {
+    if (this.userDataService.getUserData()?.name) {
+      return `${this.userDataService.getUserData()?.name} ${
+        this.userDataService.getUserData()?.lastName
+      }`;
+    }
+
+    return this.userDataService.getUserData()?.email!;
+  }
+
+  private getUserPlan(): void {
+    this.subscriptions.add(
+      this.userDataService
+        .fetchUserPlan(this.authService.getToken() ?? '')
+        .subscribe({
+          next: ({ data }) => {
+            this.userDataService.setUserData({
+              ...this.userDataService.getUserData()!,
+              plan: data.plan,
+            });
+          },
+        })
+    );
   }
 }
